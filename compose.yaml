@@ -69,4 +69,6 @@ volumes:
   redis-data:
   postgre-data:
     
- #https://hub.docker.com/   
+ #https://hub.docker.com/     funkos-1:
+
+

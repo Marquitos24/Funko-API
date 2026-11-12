@@ -1226,3 +1226,17 @@ C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net
 C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\Testcontainers.PostgreSql.dll
 C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\Yarp.ReverseProxy.dll
 C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\ZstdSharp.dll
+C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\appsettings.Development.json
+C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\appsettings.Production.json
+C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.InMemory.dll
+C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\Asp.Versioning.Abstractions.dll
+C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\Asp.Versioning.Http.dll
+C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\Asp.Versioning.Mvc.dll
+C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\Asp.Versioning.Mvc.ApiExplorer.dll
+C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\Swashbuckle.AspNetCore.Annotations.dll
+C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\Swashbuckle.AspNetCore.Filters.dll
+C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
+C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos.Test\bin\Debug\net10.0\Funkos.xml

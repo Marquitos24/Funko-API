@@ -2,22 +2,36 @@
 using Funkos.Service;
 using Microsoft.AspNetCore.Mvc;
 using Funkos.Dto;
+using Funkos.EjemplosSwagger.FunkosSwagger;
 using Funkos.Errors;
 using Funkos.Helper;
 using Funkos.Service.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.RateLimiting;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Funkos.Controller;
 
 [ApiController]
 [Route("api/[controller]")]
+[SwaggerTag("Gestion de funkos")]
 public class FunkoController(IFunkoService service, ILogger<FunkoController> _logger)
     : ControllerBase
 {
     [HttpGet]
     [EnableRateLimiting("api")]
-    public async Task<ActionResult<List<FunkosDtoResponse>>> GetAllAsync([FromQuery] FunkoFilterDto filter,
+    [SwaggerOperation(
+        Summary = "Obtener todos los funkos",
+        Description = "Devuelve una lista paginada de funkos con filtros opcionales",
+        OperationId = "GetAllAsync",
+        Tags = new[] { "Funkos" }
+    )]
+    [SwaggerRequestExample(typeof(FunkoFilterDto), typeof(FunkoFilterExample))] 
+    [SwaggerResponse(200, "Lista de funkos obtenida", typeof(List<FunkosDtoResponse>))]
+    [SwaggerResponse(400, "Parametros invalidos")]
+    [SwaggerResponse(404, "No se ha podido realizar la acción")]
+    public async Task<ActionResult<List<FunkosDtoResponse>>> GetAllAsync([FromQuery, SwaggerParameter("Filtros opcionales", Required = false)] FunkoFilterDto filter,
         CancellationToken cancellationToken)
     {
         var resultado = await service.FindAllPagedAsync(filter, cancellationToken);
@@ -30,7 +44,16 @@ public class FunkoController(IFunkoService service, ILogger<FunkoController> _lo
 
     [HttpGet("{id:long}")]
     [Authorize(Policy = "RequireAdmin")]
-    public async Task<ActionResult<FunkosDtoResponse>> GetByIdAync([FromRoute] long id,
+    [SwaggerOperation(
+        Summary = "Obtener un único funko",
+        Description = "Devuelve los datos de un funko",
+        OperationId = "GetByIdAync",
+        Tags = new[] { "Funkos" }
+    )]
+    [SwaggerResponse(200, "Datos del funko", typeof(FunkosDtoResponse))]
+    [SwaggerResponse(404, "Id no encontrado")]
+    [SwaggerResponse(404, "Funko no encontrado")]
+    public async Task<ActionResult<FunkosDtoResponse>> GetByIdAync([FromRoute, SwaggerRequestBody("ID del funko", Required = true)] long id,
         CancellationToken cancellationToken)
     {
         var resultado = await service.GetByIdAsync(id, cancellationToken);
@@ -45,9 +68,19 @@ public class FunkoController(IFunkoService service, ILogger<FunkoController> _lo
 
     [HttpPost]
     [Authorize(Policy = "RequireAdmin")]
-    [ProducesResponseType(typeof(FunkosDtoResponse), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<FunkosDtoResponse>> CreateAsync([FromForm] FunkoCreateDto dto,
+    [SwaggerOperation(
+        Summary = "Creación de un funko",
+        Description = "Devuelve los datos del funko creado",
+        OperationId = "CreateAsync",
+        Tags = new[] { "Funkos" }
+    )]
+    [SwaggerRequestExample(typeof(FunkoCreateDto), typeof(CreateFunkoExample))] 
+    [SwaggerResponse(201, "Funko creado correctamente", typeof(FunkosDtoResponse))]
+    [SwaggerResponse(400, "Errores de validación")]
+    [SwaggerResponse(404, "Funko no creadp")]
+    [SwaggerResponse(409, "Ya hay un funko con ese nombre")]
+    [SwaggerResponse(404, "Error al guardar la imagen")]
+    public async Task<ActionResult<FunkosDtoResponse>> CreateAsync([FromForm, SwaggerRequestBody("Datos para crear el funko", Required = true)] FunkoCreateDto dto,
         CancellationToken cancellationToken)
     {
         var resultado = await service.AddAsync(dto, cancellationToken);
@@ -67,7 +100,21 @@ public class FunkoController(IFunkoService service, ILogger<FunkoController> _lo
 
     [HttpPut("{id:long}")]
     [Authorize(Policy = "RequireAdmin")]
-    public async Task<ActionResult<FunkosDtoResponse>> UpdateAsync([FromRoute] long id, [FromForm] FunkoUpdateDto dto,
+    [SwaggerOperation(
+        Summary = "Actualización de un funko",
+        Description = "Devuelve los datos del funko actualizado",
+        OperationId = "UpdateAsync",
+        Tags = new[] { "Funkos" }
+    )]
+    [SwaggerRequestExample(typeof(FunkoUpdateDto), typeof(UpdateFunkoExample))] 
+    [SwaggerResponse(200, "Funko creado actualizado correctamente", typeof(FunkosDtoResponse))]
+    [SwaggerResponse(400, "Errores de validación")]
+    [SwaggerResponse(404, "No se encontro el funko")]
+    [SwaggerResponse(404, "No se guardo el funko")]
+    [SwaggerResponse(409, "Ya existe un funko con ese nombre")]
+    [SwaggerResponse(409, "Conflicto de concurrencia")]
+    public async Task<ActionResult<FunkosDtoResponse>> UpdateAsync([FromRoute, SwaggerParameter("ID del funko", Required = true)] long id,
+        [FromForm, SwaggerRequestBody("Datos actualizados del funko", Required = true)] FunkoUpdateDto dto,
         CancellationToken cancellationToken)
     {
         var actualizado = await service.UpdateAsync(id, dto, cancellationToken);
@@ -81,7 +128,18 @@ public class FunkoController(IFunkoService service, ILogger<FunkoController> _lo
 
     [HttpDelete("{id:long}")]
     [Authorize(Policy = "RequireAdmin")]
-    public async Task<ActionResult<bool>> DeleteAsync([FromRoute] long id, CancellationToken cancellationToken)
+    [SwaggerOperation(
+        Summary = "Eliminación de un funko",
+        Description = "Devuelve respuesta vacia",
+        OperationId = "DeleteAsync",
+        Tags = new[] { "Funkos" }
+    )]
+    [SwaggerResponse(204, "Funko eliminado", typeof(bool))]
+    [SwaggerResponse(400, "Funko nulo")]
+    [SwaggerResponse(404, "No se encontro el ID")]
+    [SwaggerResponse(404, "No se pudo realiazar la acción")]
+    [SwaggerResponse(409, "Conflicto de concurrencia")]
+    public async Task<ActionResult<bool>> DeleteAsync([FromRoute, SwaggerParameter("ID del funko", Required = true)] long id, CancellationToken cancellationToken)
     {
         var deleted = await service.DeleteAsync(id, cancellationToken);
         //HETOAS de Delete

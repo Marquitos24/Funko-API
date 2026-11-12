@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Funkos.Validations;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Funkos.Dto.Auth;
 
@@ -7,21 +8,25 @@ namespace Funkos.Dto.Auth;
 /// DTO para el registro de nuevos usuarios.
 /// Define los datos necesarios para crear una nueva cuenta.
 /// </summary>
+[SwaggerSchema(Description = "Datos para crearse una nueva cuenta de usuario")]
 public record AuthCreateDtoRequest
 {
     [Required (ErrorMessage =  "El nombre de usuario es obligatorio")]
     [StringLength(50, MinimumLength = 1, ErrorMessage = "El nombre de usuario no puede superar los 50 caracteres")]
     [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Solo se permiten letras, números y guiones bajos")]
+    [SwaggerSchema(Description = "Nombre de usuario", Nullable = false)]
     public required string Username { get; set; } = string.Empty;
     
     [Required (ErrorMessage =  "El correo electronico es obligatorio")]
     [EmailAddress(ErrorMessage = "Debe ser un correo electrónico válido")]
     [StringLength(256, MinimumLength = 1, ErrorMessage = "El correo electronico no puede superar los 256 caracteres")]
+    [SwaggerSchema(Description = "Email de usuario", Nullable = false)]
     public required string Email { get; set; } = string.Empty;
     
     [Required (ErrorMessage =  "Añada una contraseña")]
     [MinLength(8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres")]
     [MaxLength(100, ErrorMessage = "La contraseña no puede exceder 100 caracteres")]
+    [SwaggerSchema(Description = "contraseña de usuario", Nullable = false)]
     public required string Password { get; set; } = string.Empty;
 }
 
@@ -29,12 +34,15 @@ public record AuthCreateDtoRequest
 /// DTO para el inicio de sesión de usuarios.
 /// Credenciales necesarias para obtener token JWT.
 /// </summary>
+[SwaggerSchema(Description = "Datos iniciar sesión")]
 public record LoginRequest
 {
     [Required(ErrorMessage = "El nombre de usuario es obligatorio")]
+    [SwaggerSchema(Description = "Nombre de usuario", Nullable = false)]
     public string Username { get; init; } = string.Empty;
     
     [Required(ErrorMessage = "La contraseña es obligatoria")]
+    [SwaggerSchema(Description = "Contraseña de usuario", Nullable = false)]
     public string Password { get; set; } = string.Empty;
 }
 

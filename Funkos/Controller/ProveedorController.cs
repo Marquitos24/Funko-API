@@ -1,19 +1,32 @@
 ﻿using Funkos.Dto.Proveedor;
+using Funkos.EjemplosSwagger.ProveedorSwagger;
 using Funkos.Errors;
 using Funkos.Helper;
 using Funkos.Service.Proveedor;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Funkos.Controller;
 
 [ApiController]
 [Route("api/[controller]")]
+[SwaggerTag("Gestion de proveedores")]
 public class ProveedorController(IProveedorService service) : ControllerBase
 {
     [HttpGet]
     [Authorize(Policy = "RequireAdmin")]
+    [SwaggerOperation(
+        Summary = "Obtener todos los proveedores",
+        Description = "Devuelve una lista de proveedores",
+        OperationId = "GetAllAsync",
+        Tags = new[] { "Proveedor" }
+    )]
+    [SwaggerResponse(200, "Lista de proveedores", typeof(IEnumerable<ProveedorDtoResponse>))]
+    [SwaggerResponse(204, "No hay proveedores")]
+    [SwaggerResponse(404, "No se ha podido realizar la acción")]
     public async Task<ActionResult<IEnumerable<ProveedorDtoResponse>>> GetAllAsync(CancellationToken cancellationToken)
     {
        var resultado = await service.GetAllAsync(cancellationToken);
@@ -26,7 +39,16 @@ public class ProveedorController(IProveedorService service) : ControllerBase
     
     [HttpGet("{id}")]
     [Authorize(Policy = "RequireAdmin")]
-    public async Task<ActionResult<ProveedorDtoResponse>> GetByIdAync(string id, CancellationToken cancellationToken)
+    [SwaggerOperation(
+        Summary = "Obtener un único proveedor",
+        Description = "Devuelve los datos de un proveedor",
+        OperationId = "GetByIdAync",
+        Tags = new[] { "Proveedor" }
+    )]
+    [SwaggerResponse(200, "Datos del proveedor", typeof(ProveedorDtoResponse))]
+    [SwaggerResponse(404, "Id no encontrado")]
+    [SwaggerResponse(404, "Proveedor no encontrado")]
+    public async Task<ActionResult<ProveedorDtoResponse>> GetByIdAync([FromRoute, SwaggerRequestBody("ID del proveedor", Required = true)] string id, CancellationToken cancellationToken)
     {
         if (!ObjectId.TryParse(id, out var objectId))
             return BadRequest("El identificador no tiene un formato válido.");
@@ -43,7 +65,18 @@ public class ProveedorController(IProveedorService service) : ControllerBase
     
     [HttpPost]
     [Authorize(Policy = "RequireAdmin")]
-    public async Task<ActionResult<ProveedorDtoResponse>> CreateAsync([FromBody] ProveedorCreateDto dto, CancellationToken cancellationToken)
+    [SwaggerOperation(
+        Summary = "Cración de nuevo proveedor",
+        Description = "Devuelve el proveedor creado",
+        OperationId = "CreateAsync",
+        Tags = new[] { "Proveedor" }
+    )]
+    [SwaggerRequestExample(typeof(ProveedorCreateDto), typeof(CreateProveedorExample))] // <-- Ejemplo añadido
+    [SwaggerResponse(200, "Proveedor creado correctamente", typeof(ProveedorDtoResponse))]
+    [SwaggerResponse(400, "Errores de validación")]
+    [SwaggerResponse(404, "Proveedor no creada")]
+    [SwaggerResponse(409, "Proveedor con nombre que ya existe")]
+    public async Task<ActionResult<ProveedorDtoResponse>> CreateAsync([FromBody, SwaggerRequestBody("Datos del nuevo proveedor")] ProveedorCreateDto dto, CancellationToken cancellationToken)
     {
         var resultado = await service.AddAsync(dto, cancellationToken);
         if (resultado.IsFailure) { return resultado.Error.ToHttpResult<ProveedorDtoResponse>(); }
@@ -60,7 +93,20 @@ public class ProveedorController(IProveedorService service) : ControllerBase
     
     [HttpPut("{id}")]
     [Authorize(Policy = "RequireAdmin")]
-    public async Task<ActionResult<ProveedorDtoResponse>> UpdateAsync([FromRoute] string id, [FromBody] ProveedorUpdateDto dto, CancellationToken cancellationToken)
+    [SwaggerOperation(
+        Summary = "Actualización de datos de un proveedor",
+        Description = "Devuelve los datos de un proveedor actualizado",
+        OperationId = "UpdateAsync",
+        Tags = new[] { "Proveedor" }
+    )]
+    [SwaggerRequestExample(typeof(ProveedorUpdateDto), typeof(UpdateProveedorExample))] // <-- Ejemplo añadido
+    [SwaggerResponse(200, "Proveedor actualizado correctamente", typeof(ProveedorDtoResponse))]
+    [SwaggerResponse(400, "Errores de validación")]
+    [SwaggerResponse(404, "No se encontro el proveedor")]
+    [SwaggerResponse(409, "Proveedor con nombre que ya existe")]
+    [SwaggerResponse(409, "Conflicto de concurrencia")]
+    public async Task<ActionResult<ProveedorDtoResponse>> UpdateAsync([FromRoute, SwaggerParameter("ID del proveedor", Required = true)] string id,
+    [FromBody, SwaggerRequestBody("Datos actualizados del proveedor", Required = true)] ProveedorUpdateDto dto, CancellationToken cancellationToken)
     {
         if (!ObjectId.TryParse(id, out var objectId))
             return BadRequest("El identificador no tiene un formato válido.");
@@ -76,7 +122,18 @@ public class ProveedorController(IProveedorService service) : ControllerBase
     
     [HttpDelete("{id}")]
     [Authorize(Policy = "RequireAdmin")]
-    public async Task<ActionResult<bool>> DeleteAsync([FromRoute] string id, CancellationToken cancellationToken)
+    [SwaggerOperation(
+        Summary = "Eliminación de un proveedor",
+        Description = "Devuelve not content",
+        OperationId = "DeleteAsync",
+        Tags = new[] { "Proveedor" }
+    )]
+    [SwaggerResponse(204, "Proveedor eliminado correctamente", typeof(bool))]
+    [SwaggerResponse(400, "Proveedor nula")]
+    [SwaggerResponse(422, "el proveedor tiene funkos asociados")]
+    [SwaggerResponse(404, "No se pudo realiazar la acción")]
+    [SwaggerResponse(409, "Conflicto de concurrencia")]
+    public async Task<ActionResult<bool>> DeleteAsync([FromRoute, SwaggerParameter("ID del proveedor", Required = true)] string id, CancellationToken cancellationToken)
     {
         if (!ObjectId.TryParse(id, out var objectId))
             return BadRequest("El identificador no tiene un formato válido.");

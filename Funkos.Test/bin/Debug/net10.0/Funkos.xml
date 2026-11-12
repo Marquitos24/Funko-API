@@ -1,0 +1,1072 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Funkos</name>
+    </assembly>
+    <members>
+        <member name="P:Funkos.Cache.CacheOptions.DefaultExpirationMinutes">
+            <summary>
+            Tiempo de vida por defecto de las entradas en caché (en minutos).
+            </summary>
+        </member>
+        <member name="P:Funkos.Cache.CacheOptions.SlidingExpirationMinutes">
+            <summary>
+            Tiempo de expiración deslizante (en minutos) ==> Cada vez que se accede al dato, se renueva su tiempo de expiración.
+            Se renueva en cada acceso.
+            </summary>
+        </member>
+        <member name="T:Funkos.Cache.ICacheService">
+            <summary>
+            Operaciones a realizar sobre la caché (ya sea con Redis o MemoryCache)
+            </summary>
+        </member>
+        <member name="M:Funkos.Cache.ICacheService.GetAsync``1(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Obtener un dato de la cache
+            </summary>
+            <param name="key">Identificador del elemento almacenado</param>
+            <param name="ct">Para cancelar la operación</param>
+            <typeparam name="T">tipo de dato a recuperar</typeparam>
+            <returns>Devuelve dato almacenado</returns>
+        </member>
+        <member name="M:Funkos.Cache.ICacheService.SetAsync``1(System.String,``0,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+            <summary>
+            Guardar un dato en la caché
+            </summary>
+            <param name="key">Identificador del elemento almacenado</param>
+            <param name="value">Objeto a almacenar</param>
+            <param name="expiration">Tiempo durante el que permanecerá almacenado</param>
+            <param name="ct">Para cancelar la operación</param>
+            <typeparam name="T">tipo de dato a recuperar</typeparam>
+            <returns>No devuelve nada</returns>
+        </member>
+        <member name="M:Funkos.Cache.ICacheService.RemoveAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Eliminar un dato de la caché
+            </summary>
+            <param name="key">Identificador del elemento almacenado</param>
+            <param name="ct">Para cancelar la operación</param>
+            <returns>No devuelve nada</returns>
+        </member>
+        <member name="M:Funkos.Cache.ICacheService.ExistsAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Comprobar si existe un dato en la caché
+            </summary>
+            <param name="key">Identificador del elemento almacenado</param>
+            <param name="ct">Para cancelar la operación</param>
+            <returns>Devuelve true --> Si existe. false --> Si no existe</returns>
+        </member>
+        <member name="M:Funkos.Cache.ICacheService.GetOrSetAsync``1(System.String,System.Func{System.Threading.Tasks.Task{``0}},System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+            <summary>
+            Obtener o guardar automáticamente.
+            Combina GetAsync() y SetAsync() en una única operación.
+            1. Busca el elemento en la caché. --> 2. Si existe, lo devuelve directamente. / Si no existe, ejecuta factory para obtener el dato
+            3. Guarda el resultado en la caché. --> 4. Devuelve el resultado.
+            </summary>
+            <param name="key">Identificador del elemento almacenado</param>
+            <param name="factory">Función que al ejecutarse, devuelve una tarea asíncrona con un resultado de tipo T</param>
+            <param name="expiration">Tiempo durante el que permanecerá almacenado</param>
+            <param name="ct">Para cancelar la operación</param>
+            <typeparam name="T">tipo de dato a recuperar</typeparam>
+            <returns>Devuelve dato almacenado o nada si se a enviado</returns>
+        </member>
+        <member name="M:Funkos.Cache.RedisCacheService.GetAsync``1(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Obtener un dato de la cache
+            </summary>
+            <param name="key">Identificador del elemento almacenado</param>
+            <param name="ct">Para cancelar la operación</param>
+            <typeparam name="T">tipo de dato a recuperar</typeparam>
+            <returns>Devuelve dato almacenado</returns>
+        </member>
+        <member name="M:Funkos.Cache.RedisCacheService.SetAsync``1(System.String,``0,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+            <summary>
+            Guardar un dato en la caché
+            </summary>
+            <param name="key">Identificador del elemento almacenado</param>
+            <param name="value">Objeto a almacenar</param>
+            <param name="expiration">Tiempo durante el que permanecerá almacenado</param>
+            <param name="ct">Para cancelar la operación</param>
+            <typeparam name="T">tipo de dato a recuperar</typeparam>
+            <returns>No devuelve nada</returns>
+        </member>
+        <member name="M:Funkos.Cache.RedisCacheService.RemoveAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Eliminar un dato de la caché
+            </summary>
+            <param name="key">Identificador del elemento almacenado</param>
+            <param name="ct">Para cancelar la operación</param>
+            <returns>No devuelve nada</returns>
+        </member>
+        <member name="M:Funkos.Cache.RedisCacheService.ExistsAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Comprobar si existe un dato en la caché
+            </summary>
+            <param name="key">Identificador del elemento almacenado</param>
+            <param name="ct">Para cancelar la operación</param>
+            <returns>Devuelve true --> Si existe. false --> Si no existe</returns>
+        </member>
+        <member name="M:Funkos.Cache.RedisCacheService.GetOrSetAsync``1(System.String,System.Func{System.Threading.Tasks.Task{``0}},System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+            <summary>
+            Obtener o guardar automáticamente.
+            Combina GetAsync() y SetAsync() en una única operación.
+            1. Busca el elemento en la caché. --> 2. Si existe, lo devuelve directamente. / Si no existe, ejecuta factory para obtener el dato
+            3. Guarda el resultado en la caché. --> 4. Devuelve el resultado.
+            </summary>
+            <param name="key">Identificador del elemento almacenado</param>
+            <param name="factory">Función que al ejecutarse, devuelve una tarea asíncrona con un resultado de tipo T</param>
+            <param name="expiration">Tiempo durante el que permanecerá almacenado</param>
+            <param name="ct">Para cancelar la operación</param>
+            <typeparam name="T">tipo de dato a recuperar</typeparam>
+            <returns>Devuelve dato almacenado o nada si se a enviado</returns>
+        </member>
+        <member name="T:Funkos.Controller.AuthIdentityController">
+            <summary>
+            Controller de autenticacion usando ASP.NET Core Identity.
+            Gestiona el registro de usuarios, inicio de sesión (generación de tokens JWT) y obtención del perfil actual.
+            </summary>
+        </member>
+        <member name="M:Funkos.Controller.AuthIdentityController.#ctor(Microsoft.AspNetCore.Identity.UserManager{Funkos.Models.User},Microsoft.AspNetCore.Identity.SignInManager{Funkos.Models.User},Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{Funkos.Controller.AuthIdentityController})">
+            <summary>
+            Controller de autenticacion usando ASP.NET Core Identity.
+            Gestiona el registro de usuarios, inicio de sesión (generación de tokens JWT) y obtención del perfil actual.
+            </summary>
+        </member>
+        <member name="M:Funkos.Controller.AuthIdentityController.Signup(Funkos.Dto.Auth.AuthCreateDtoRequest)">
+            <summary>
+            Registra un usuario nuevo con Identity.
+            </summary>
+        </member>
+        <member name="M:Funkos.Controller.AuthIdentityController.Login(Funkos.Dto.Auth.LoginRequest)">
+            <summary>
+            Inicia sesion verificando las credenciales y genera un Token JWT para autenticar futuras peticiones.
+            </summary>
+        </member>
+        <member name="M:Funkos.Controller.AuthIdentityController.GetCurrentUser">
+            <summary>
+            Devuelve el usuario autenticado actual.
+            </summary>
+        </member>
+        <member name="M:Funkos.Controller.CategoriaController.GetAllAsync(System.Threading.CancellationToken)">
+            <summary>
+            Obtener todos las categorias
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Funkos.Dto.Auth.AuthCreateDtoRequest">
+            <summary>
+            DTO para el registro de nuevos usuarios.
+            Define los datos necesarios para crear una nueva cuenta.
+            </summary>
+        </member>
+        <member name="T:Funkos.Dto.Auth.LoginRequest">
+            <summary>
+            DTO para el inicio de sesión de usuarios.
+            Credenciales necesarias para obtener token JWT.
+            </summary>
+        </member>
+        <member name="P:Funkos.Dto.Common.PagedResult`1.Items">
+            <summary>
+            Colección de Elementos de la página solicitada según los parámetros de paginación.
+            </summary>
+            <remarks>
+            Propiedad == NUNCA  null --> Si no hay elementos, devuelve una colección vacía.
+            Nº elementos coincide con PageSize (excepto en la última página).
+            </remarks>
+        </member>
+        <member name="P:Funkos.Dto.Common.PagedResult`1.TotalCount">
+            <summary>
+            Cantidad total de registros que coinciden con los filtros aplicados, sin considerar la paginación.
+            </summary>
+            <remarks>
+            Utilizado para:
+            - Calcular número total de páginas
+            - Mostrar información del tipo "Mostrando 1-20 de 150 elementos"
+            - Determinar si hay más datos disponibles
+            </remarks>
+        </member>
+        <member name="P:Funkos.Dto.Common.PagedResult`1.Page">
+            <summary>
+            Nº de la página devuelta, comenzando desde 1 (primera página de los resultados)
+            </summary>
+            <remarks>
+            Comportamiento según valor:
+            - Page = 1: Primera página (siempre tiene HasPreviousPage = false)
+            - Page > 1: Páginas intermedias o finales
+            - Page > TotalPages: Devuelve página vacía
+            </remarks>
+        </member>
+        <member name="P:Funkos.Dto.Common.PagedResult`1.PageSize">
+             <summary>
+             Número máximo de elementos que hay en una página. (Configurable por el cliente según sus necesidades)
+             </summary>
+             <remarks>
+             Valores típicos:
+             - 10: Vistas detalladas con mucha información
+             - 20: Balance entre información y rendimiento
+             - 50-100: Listados densos o exports
+            
+             Límites recomendados:
+             - Mínimo: 1 elemento
+             - Máximo: 100 elementos (para evitar problemas de rendimiento)
+             </remarks>
+        </member>
+        <member name="P:Funkos.Dto.Common.PagedResult`1.TotalPages">
+            <summary>
+            Número total de páginas que existen para los resultados ==> Techo de TotalCount / PageSize.
+            </summary>
+            <remarks>
+            Fórmula: Math.Ceiling(TotalCount / PageSize)
+            Math.Ceiling ==> Redondear numero hacia arriva
+            Casos especiales:
+            - PageSize = 0: Retorna 0 para evitar división por cero
+            - TotalCount = 0: Retorna 0 (no hay páginas)
+            </remarks>
+            <example>
+            TotalCount = 150, PageSize = 20 → 150/20 = 7.5 ceil(7.5) = 8 ==> TotalPages = 8
+            </example>
+        </member>
+        <member name="P:Funkos.Dto.Common.PagedResult`1.HasNextPage">
+            <summary>
+            Indica SI hay una página siguiente.
+            True cuando Page es menor que TotalPages.
+            </summary>
+            <remarks>
+            Uso típico en UI:
+            - Habilitar botón "Siguiente" cuando HasNextPage = true
+            - Deshabilitar cuando HasNextPage = false
+            - Mostrar indicador visual "Página X de Y"
+            </remarks>
+            <example>
+            Page = 2, TotalPages = 8 → HasNextPage = true
+            Page = 8, TotalPages = 8 → HasNextPage = false
+            </example>
+        </member>
+        <member name="P:Funkos.Dto.Common.PagedResult`1.HasPreviousPage">
+            <summary>
+            Indica si hay una página anterior.
+            True cuando Page es mayor que 1.
+            </summary>
+            <remarks>
+            Uso típico en UI:
+            - Habilitar botón "Anterior" cuando HasPreviousPage = true
+            - Deshabilitar cuando HasPreviousPage = false
+            - Ocultar completamente el botón en primera página
+            </remarks>
+            <example>
+            Page = 1, TotalPages = 8 → HasPreviousPage = false
+            Page = 2, TotalPages = 8 → HasPreviousPage = true
+            </example>
+        </member>
+        <member name="M:Funkos.GraphQL.Mutations.TiendaMutation.CrearProducto(Funkos.GraphQL.Inputs.CreateFunkoInput,Funkos.Service.IFunkoService,HotChocolate.Subscriptions.ITopicEventSender,System.Threading.CancellationToken)">
+            <summary>
+            Crea un nuevo funko
+            </summary>
+        </member>
+        <member name="M:Funkos.GraphQL.Mutations.TiendaMutation.ActualizarFunko(System.Int64,Funkos.GraphQL.Inputs.UpdateFunkoInput,Funkos.Service.IFunkoService,HotChocolate.Subscriptions.ITopicEventSender,System.Threading.CancellationToken)">
+            <summary>
+            Actualiza un funko existente
+            </summary>
+        </member>
+        <member name="M:Funkos.GraphQL.Mutations.TiendaMutation.EliminarFunko(System.Int64,Funkos.Service.IFunkoService,HotChocolate.Subscriptions.ITopicEventSender,System.Threading.CancellationToken)">
+            <summary>
+            Elimina un funko (borrado logico)
+            </summary>
+        </member>
+        <member name="M:Funkos.GraphQL.Mutations.TiendaMutation.CrearCategoria(Funkos.GraphQL.Inputs.CreateCategoriaInput,Funkos.Service.Categoria.ICategoriaService,HotChocolate.Subscriptions.ITopicEventSender,System.Threading.CancellationToken)">
+            <summary>
+            Crea un nueva categoria
+            </summary>
+        </member>
+        <member name="M:Funkos.GraphQL.Mutations.TiendaMutation.ActualizarCategoria(System.String,Funkos.GraphQL.Inputs.UpdateCategoriaInput,Funkos.Service.Categoria.ICategoriaService,HotChocolate.Subscriptions.ITopicEventSender,System.Threading.CancellationToken)">
+            <summary>
+            Actualiza un funko existente
+            </summary>
+        </member>
+        <member name="M:Funkos.GraphQL.Mutations.TiendaMutation.EliminarCategoria(System.String,Funkos.Service.Categoria.ICategoriaService,HotChocolate.Subscriptions.ITopicEventSender,System.Threading.CancellationToken)">
+            <summary>
+            Elimina una categoria (borrado fisico)
+            </summary>
+        </member>
+        <member name="T:Funkos.GraphQL.Queries.TiendaQuery">
+            <summary>
+            Consultas de solo LECTURA de GraphQL.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Funkos.GraphQL.Queries.TiendaQuery.GetFunkosPaged(Funkos.DbContext.AppDbContext)" -->
+        <member name="M:Funkos.GraphQL.Queries.TiendaQuery.GetFunko(System.Int64,Funkos.Service.IFunkoService,System.Threading.CancellationToken)">
+            <summary>Obtiene un funko por ID como DTO.</summary>
+            <param name="id">ID del funko.</param>
+            <param name="FunkoService">Repositorio de funkos.</param>
+            <returns>Producto encontrado (DTO) o null.</returns>
+        </member>
+        <member name="M:Funkos.GraphQL.Queries.TiendaQuery.GetCategorias(Funkos.DbContext.AppDbContext)">
+            <summary>Obtiene todas las categorías con soporte de paginación/filtrado de Hot Chocolate.</summary>
+        </member>
+        <member name="M:Funkos.GraphQL.Queries.TiendaQuery.GetCategoria(System.String,Funkos.Service.Categoria.ICategoriaService,System.Threading.CancellationToken)">
+            <summary>Obtiene una categoría por ID como DTO.</summary>
+            <param name="id">ID de la categoría.</param>
+            <param name="categoriaRepository">Repositorio de categorías.</param>
+            <returns>Categoría encontrada (DTO) o null.</returns>
+        </member>
+        <member name="M:Funkos.GraphQL.Subscriptions.Subscription.FunkoCreado(Funkos.Models.Funko)">
+            <summary>
+            Notifica cuando se crea un nuevo funko
+            </summary>
+        </member>
+        <member name="M:Funkos.GraphQL.Subscriptions.Subscription.FunkoActualizado(Funkos.Models.Funko)">
+            <summary>
+            Notifica cuando se actualiza un funko
+            </summary>
+        </member>
+        <member name="M:Funkos.GraphQL.Subscriptions.Subscription.FunkoEliminado(System.Int64)">
+            <summary>
+            Notifica cuando se elimina un funko
+            </summary>
+        </member>
+        <member name="F:Funkos.idGenerators.IdYoutube.Chars">
+            <summary>Alfabeto Base64url: 26 mayúsculas, 26 minúsculas, 10 dígitos, `-` y `_`.</summary>
+        </member>
+        <member name="F:Funkos.idGenerators.IdYoutube.Longitud">
+            <summary>Longitud fija de todos los identificadores generados.</summary>
+        </member>
+        <member name="F:Funkos.idGenerators.IdYoutube.Patron">
+            <summary>Expresión regular que valida un identificador de esta familia.</summary>
+        </member>
+        <member name="F:Funkos.idGenerators.IdYoutube.PatronTexto">
+            <summary>Texto de la expresión regular, para usarlo en atributos de validación.</summary>
+        </member>
+        <member name="F:Funkos.idGenerators.IdYoutube.MensajeFormato">
+            <summary>Mensaje de error único para cualquier intento de asignar un código con formato inválido.</summary>
+        </member>
+        <member name="M:Funkos.idGenerators.IdYoutube.Next">
+            <summary>
+            Genera un identificador aleatorio de 11 caracteres.
+            <see cref="P:System.Random.Shared"/> es thread-safe y evita crear un generador por llamada.
+            </summary>
+            <returns>Cadena de 11 caracteres Base64url.</returns>
+        </member>
+        <member name="M:Funkos.idGenerators.IdYoutube.EsValido(System.String)">
+            <summary>
+            Indica si un valor tiene la forma válida de estos identificadores.
+            </summary>
+            <param name="codigo">Valor a comprobar (puede ser null).</param>
+            <returns>True si mide 11 caracteres y todos pertenecen al alfabeto.</returns>
+        </member>
+        <member name="T:Funkos.idGenerators.IdYoutubeAttribute">
+             <summary>
+             Atributo de validación para propiedades que contienen un identificador estilo YouTube.
+             Se aplica a los DTO de petición.
+            
+             Que el identificador exista ya en base de datos es una comprobación distinta y pertenece
+             al servicio (devuelve conflicto, no error de validación).
+            
+             La regla de formato vive una sola vez en <see cref="T:Funkos.idGenerators.IdYoutube"/>; este atributo y la
+             regla FluentValidation equivalente delegan en ella para que no puedan divergir.
+             </summary>
+        </member>
+        <member name="M:Funkos.idGenerators.IdYoutubeAttribute.IsValid(System.Object,System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            Comprueba que el valor sea un identificador válido o que esté vacío.
+            Un valor nulo o vacío es aceptado porque el identificador puede generarse en el servidor.
+            </summary>
+            <param name="value">Valor de la propiedad.</param>
+            <param name="context">Contexto de validación del modelo.</param>
+            <returns>Éxito si el valor es nulo, vacío o tiene el formato correcto.</returns>
+        </member>
+        <member name="T:Funkos.idGenerators.YouTubeIdValueGenerator">
+             <summary>
+             Generador de identificadores estilo YouTube para claves primarias de tipo <c>string</c>
+             en Entity Framework Core. Delega en <see cref="T:Funkos.idGenerators.IdYoutube"/>.
+            
+             EF Core solo invoca un generador cuando la propiedad llega con el valor por defecto de
+             su tipo; para <c>string</c> ese centinela es <c>null</c>. Si la propiedad llega
+             inicializada (incluso con <c>string.Empty</c>), EF la da por asignada y no genera nada.
+             Por eso la clave se declara sin inicializar en la entidad.
+             </summary>
+        </member>
+        <member name="M:Funkos.idGenerators.YouTubeIdValueGenerator.Next(Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry)">
+            <summary>
+            Genera y Devuelve el siguiente identificador .
+            </summary>
+            <param name="entry">Entrada del ChangeTracker que EF Core asocia a la entidad.</param>
+            <returns>Identificador de 11 caracteres.</returns>
+        </member>
+        <member name="P:Funkos.idGenerators.YouTubeIdValueGenerator.GeneratesTemporaryValues">
+            <summary>Los identificadores son valores definitivos, no temporales.</summary>
+        </member>
+        <member name="T:Funkos.Infrastructure.Json.AppJsonContext">
+            <summary>
+            Contexto de serialización JSON con source-gen para AOT/trimming.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.Boolean">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.NullableBoolean">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.Decimal">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.NullableDecimal">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.AuthCreateDtoRequest">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.AuthDtoResponse">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.LoginRequest">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.CategoriaCreateDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.CategoriaDtoResponse">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.CategoriaUpdateDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.CategoriaWithFunkosResponseDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.PagedResultFunkosDtoResponse">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.FunkoCreateDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.FunkoFilterDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.FunkoParaCategoriaDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.FunkosDtoResponse">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.FunkoUpdateDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.ProveedorCreateDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.ProveedorDtoResponse">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.ProveedorUpdateDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.Categoria">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.Funko">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.Proveedor">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.Role">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.IFormFile">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.IHeaderDictionary">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.StringValues">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.ObjectId">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.ICollectionFunkoParaCategoriaDto">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.ICollectionFunko">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.IEnumerableFunkosDtoResponse">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.IEnumerableProveedorDtoResponse">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.IEnumerableFunko">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.IListString">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.ListCategoriaDtoResponse">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.ListFunkosDtoResponse">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.DateTime">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.NullableDateTime">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.Int32">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.NullableInt32">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.Int64">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.String">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.Default">
+            <summary>
+            The default <see cref="T:System.Text.Json.Serialization.JsonSerializerContext"/> associated with a default <see cref="T:System.Text.Json.JsonSerializerOptions"/> instance.
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Json.AppJsonContext.GeneratedSerializerOptions">
+            <summary>
+            The source-generated options associated with this context.
+            </summary>
+        </member>
+        <member name="M:Funkos.Infrastructure.Json.AppJsonContext.#ctor">
+            <inheritdoc/>
+        </member>
+        <member name="M:Funkos.Infrastructure.Json.AppJsonContext.#ctor(System.Text.Json.JsonSerializerOptions)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Funkos.Infrastructure.Json.AppJsonContext.GetTypeInfo(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="P:Funkos.Infrastructure.Storage.StorageSettings.RootPath">
+            <summary>
+            Ruta base donde se guardan los archivos
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Storage.StorageSettings.MaxFileSize">
+            <summary>
+            Tamaño máximo en bytes (10 MB por defecto)
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Storage.StorageSettings.AllowedExtensions">
+            <summary>
+            Extensiones permitidas
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Storage.StorageSettings.AllowedContentTypes">
+            <summary>
+            Tipos MIME permitidos
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Storage.StorageSettings.ImagesFolder">
+            <summary>
+            Subdirectorio para imágenes
+            </summary>
+        </member>
+        <member name="P:Funkos.Infrastructure.Storage.StorageSettings.DocumentsFolder">
+            <summary>
+            Subdirectorio para documentos
+            </summary>
+        </member>
+        <member name="M:Funkos.Middleware.RateLimitingState.GetOrCreate(System.String,System.String,System.String)">
+            <summary>
+            Obtiene (o crea) la partición para el cliente, verbo y ruta indicados.
+            </summary>
+        </member>
+        <member name="M:Funkos.Middleware.RateLimitingState.Dispose">
+            <summary>
+            Libera los limitadores (y sus temporizadores) al detener la aplicación.
+            </summary>
+        </member>
+        <member name="T:Funkos.Middleware.RateLimitPartition">
+            <summary>
+            Contenedor de los limitadores de una partición (IP + verbo + ruta).
+            La ventana general (100/15s) siempre existe; la ventana de un minuto
+            solo se crea si la ruta es de autenticación o la petición es POST.
+            </summary>
+        </member>
+        <member name="P:Funkos.Middleware.RateLimitPartition.General">
+            <summary>Limitador de la ventana general (100 por 15 segundos).</summary>
+        </member>
+        <member name="P:Funkos.Middleware.RateLimitPartition.Minute">
+            <summary>Limitador de la ventana de un minuto, si aplica.</summary>
+        </member>
+        <member name="P:Funkos.Middleware.RateLimitPartition.MinuteLimit">
+            <summary>Límite de la ventana de un minuto (10 autenticación, 20 escritura).</summary>
+        </member>
+        <member name="P:Funkos.Middleware.RateLimitPartition.HasMinuteWindow">
+            <summary>Indica si esta partición tiene ventana de un minuto.</summary>
+        </member>
+        <member name="P:Funkos.Middleware.RateLimitPartition.CreatedUtc">
+            <summary>Momento de creación, usado para calcular el reset de la ventana.</summary>
+        </member>
+        <member name="P:Funkos.Middleware.RateLimitPartition.LastAccessUtc">
+            <summary>Último acceso, usado para la limpieza de particiones inactivas.</summary>
+        </member>
+        <member name="M:Funkos.Middleware.RateLimitPartition.Create(System.String,System.String)">
+            <summary>Crea la partición con las reglas que correspondan a la ruta y el verbo.</summary>
+        </member>
+        <member name="M:Funkos.Middleware.RateLimitPartition.Dispose">
+            <summary>Libera los limitadores de la partición.</summary>
+        </member>
+        <member name="T:Funkos.Middleware.RateLimitMiddleware">
+            <summary>
+            Middleware de rate limiting sobre la API nativa <c>System.Threading.RateLimiting</c>.
+            Aplica las reglas por partición (IP + verbo + ruta), emite las cabeceras
+            estándar <c>RateLimit-Limit</c>/<c>RateLimit-Remaining</c>/<c>RateLimit-Reset</c>
+            en las respuestas permitidas y devuelve un 429 con cuerpo JSON y <c>Retry-After</c>.
+            </summary>
+        </member>
+        <member name="M:Funkos.Middleware.RateLimitMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Funkos.Middleware.RateLimitingState)">
+            <summary>
+            Crea el middleware.
+            </summary>
+            <param name="next">Siguiente componente de la pipeline.</param>
+            <param name="state">Estado compartido de particiones y limitadores.</param>
+        </member>
+        <member name="M:Funkos.Middleware.RateLimitMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Ejecuta la comprobación de límites para la petición en curso.
+            </summary>
+            <param name="context">Contexto HTTP de la petición.</param>
+        </member>
+        <member name="M:Funkos.Middleware.RateLimitMiddleware.SetRateLimitHeaders(Microsoft.AspNetCore.Http.HttpContext,Funkos.Middleware.RateLimitPartition)">
+            <summary>
+            Escribe las cabeceras estándar de rate limiting en la respuesta permitida,
+            usando la ventana de periodo más largo (la misma prioridad que las cabeceras
+            <c>X-Rate-Limit-*</c> clásicas).
+            </summary>
+        </member>
+        <member name="M:Funkos.Middleware.RateLimitMiddleware.ComputeResetSeconds(System.DateTime,System.TimeSpan)">
+            <summary>
+            Calcula los segundos que faltan para el siguiente replenishment de la ventana
+            (el temporizador de la ventana fija se ancla en la creación del limitador).
+            </summary>
+        </member>
+        <member name="M:Funkos.Middleware.RateLimitMiddleware.RejectAsync(Microsoft.AspNetCore.Http.HttpContext,System.Threading.RateLimiting.RateLimitLease,System.Int32,System.TimeSpan)">
+            <summary>
+            Devuelve el 429 con cuerpo JSON y la cabecera <c>Retry-After</c>
+            (segundos hasta que se replenishen los permisos).
+            </summary>
+        </member>
+        <member name="M:Funkos.Middleware.RateLimitMiddleware.ResolveClientIp(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Resuelve la IP del cliente: cabeceras del proxy inverso
+            (<c>X-Forwarded-For</c> primer salto, luego <c>X-Real-IP</c>) con
+            fallback a la IP de conexión directa.
+            </summary>
+        </member>
+        <member name="M:Funkos.Middleware.RateLimitMiddleware.NormalizePath(Microsoft.AspNetCore.Http.PathString)">
+            <summary>Normaliza la ruta igual que el rate limiting clásico: minúsculas y sin barra final.</summary>
+        </member>
+        <member name="T:Funkos.Migrations.AddFunkosTable">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.AddFunkosTable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.AddFunkosTable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.AddFunkosTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Funkos.Migrations.AddFunkosTable2">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.AddFunkosTable2.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.AddFunkosTable2.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.AddFunkosTable2.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Funkos.Migrations.AddFunkosTable3">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.AddFunkosTable3.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.AddFunkosTable3.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.AddFunkosTable3.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Funkos.Migrations.ChangeProveedorIdToString">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.ChangeProveedorIdToString.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.ChangeProveedorIdToString.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.ChangeProveedorIdToString.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Funkos.Migrations.IdYoutubeCategorias">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.IdYoutubeCategorias.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.IdYoutubeCategorias.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.IdYoutubeCategorias.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Funkos.Migrations.AddVersion">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.AddVersion.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.AddVersion.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.AddVersion.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Funkos.Migrations.AddAutorizeAndAutentication">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.AddAutorizeAndAutentication.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.AddAutorizeAndAutentication.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Funkos.Migrations.AddAutorizeAndAutentication.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Funkos.Models.Role">
+            <summary>
+            Rol personalizado con descripcion.
+            </summary>
+        </member>
+        <member name="M:Funkos.RealTime.Notificaciones.NotificacionesHub.SendMessage(System.String,System.String)">
+            <summary>
+            El cliente llama a este metodo para enviar un mensaje a todos los conectados.
+            </summary>
+        </member>
+        <member name="M:Funkos.RealTime.Notificaciones.NotificacionesHub.SendToCaller(System.String)">
+            <summary>
+            Enviar un mensaje solo al cliente que lo llamo.
+            </summary>
+        </member>
+        <member name="M:Funkos.RealTime.Notificaciones.NotificacionesHub.SendToGroup(System.String,System.String)">
+            <summary>
+            Enviar un mensaje a un grupo especifico.
+            </summary>
+        </member>
+        <member name="M:Funkos.RealTime.Notificaciones.NotificacionesHub.OnConnectedAsync">
+            <summary>
+            Se ejecuta cuando un cliente se conecta.
+            Asignamos grupos automaticamente.
+            </summary>
+        </member>
+        <member name="M:Funkos.RealTime.Notificaciones.NotificacionesHub.OnDisconnectedAsync(System.Exception)">
+            <summary>
+            Se ejecuta cuando un cliente se desconecta.
+            Limpiamos recursos si es necesario.
+            </summary>
+        </member>
+        <member name="M:Funkos.Repositories.FunkoRepository.ExistsByNameAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="id"></param>
+            <param name="can"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Funkos.Repositories.FunkoRepository.ExistsFunkosCAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Funkos.Repositories.FunkoRepository.ApplySorting(System.Linq.IQueryable{Funkos.Models.Funko},System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="query"></param>
+            <param name="sortBy"></param>
+            <param name="direction"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Funkos.Repositories.Proveedor.ProveedorRepository.ExistsAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Funkos.Service.FunkoService.AplicarPatch(Funkos.Models.Funko,Funkos.Dto.FunkoPatchDto)">
+            <summary>
+            Aplica el patch condicional: cada campo solo se toca si el DTO trae valor
+            (la semantica de PATCH). Metodo puro sin estado: extraido de
+            UpdatePartialAsync para dejar el flujo de ese metodo lineal.
+            </summary>
+        </member>
+        <member name="T:Funkos.Service.Storage.FileSystemStorageService">
+            <summary>
+            Servicio de almacenamiento de archivos 
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.FileSystemStorageService.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Options.IOptions{Funkos.Infrastructure.Storage.StorageSettings},Microsoft.Extensions.Logging.ILogger{Funkos.Service.Storage.FileSystemStorageService})">
+            <summary>
+            Servicio de almacenamiento de archivos 
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.FileSystemStorageService.InitAsync(System.Threading.CancellationToken)">
+            <summary>
+            Inicializa la estructura de directorios necesaria en el disco al arrancar la App.
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.FileSystemStorageService.StoreAsync(Microsoft.AspNetCore.Http.IFormFile,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Almacena un archivo recibido desde una petición HTTP (IFormFile), aplicando validaciones de seguridad,
+            renombrándolo de forma única y guardándolo en la carpeta.
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.FileSystemStorageService.StoreAsync(System.IO.Stream,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sobrecarga para almacenar un archivo directamente desde un Stream genérico aplicando las mismas reglas de validación.
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.FileSystemStorageService.LoadAsStreamAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Carga un archivo existente desde el disco y lo devuelve en formato de lectura (Stream).
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.FileSystemStorageService.GetFilePath(System.String,System.String)">
+            <summary>
+            Obtiene la ruta física absoluta de un archivo en el disco, saneando el nombre para evitar problemas de rutas.
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.FileSystemStorageService.GetUrl(System.String,System.String)">
+            <summary>
+            Construye y devuelve la URL pública relativa con la que los clientes web podrán acceder al archivo.
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.FileSystemStorageService.Exists(System.String,System.String)">
+            <summary>
+            Comprueba si un archivo existe físicamente en el disco.
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.FileSystemStorageService.DeleteAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Elimina un archivo físico del disco del servidor si este existe.
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.FileSystemStorageService.ListFilesAsync(System.String)">
+            <summary>
+            Devuelve una colección con los nombres de todos los archivos contenidos dentro de una carpeta específica.
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.FileSystemStorageService.GetFolderPath(System.String)">
+            <summary>
+            Método auxiliar privado para calcular y validar la ruta de la subcarpeta, previniendo ataques de Path Traversal.
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.FileSystemStorageService.GenerateFileName(System.String)">
+            <summary>
+            Genera un nombre de archivo único combinando un timestamp UTC actual y un GUID aleatorio truncado.
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.IStorageService.InitAsync(System.Threading.CancellationToken)">
+            <summary>
+            Inicializa el almacenamiento
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.IStorageService.StoreAsync(Microsoft.AspNetCore.Http.IFormFile,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Almacena un archivo y devuelve el nombre generado
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.IStorageService.StoreAsync(System.IO.Stream,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Almacena un archivo desde un stream
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.IStorageService.LoadAsStreamAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Carga un archivo como stream
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.IStorageService.GetFilePath(System.String,System.String)">
+            <summary>
+            Obtiene la ruta completa del archivo
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.IStorageService.GetUrl(System.String,System.String)">
+            <summary>
+            Obtiene la URL pública del archivo
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.IStorageService.Exists(System.String,System.String)">
+            <summary>
+            Verifica si un archivo existe
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.IStorageService.DeleteAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Elimina un archivo
+            </summary>
+        </member>
+        <member name="M:Funkos.Service.Storage.IStorageService.ListFilesAsync(System.String)">
+            <summary>
+            Lista todos los archivos de una carpeta
+            </summary>
+        </member>
+        <member name="T:Program">
+            <summary>
+            Auto-generated public partial Program class for top-level statement apps.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type)">
+            <summary>
+            Generates a documentation comment ID for a type.
+            Example: T:Namespace.Outer+Inner`1 becomes T:Namespace.Outer.Inner`1
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.PropertyInfo)">
+            <summary>
+            Generates a documentation comment ID for a property.
+            Example: P:Namespace.ContainingType.PropertyName or for an indexer P:Namespace.ContainingType.Item(System.Int32)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type,System.String)">
+            <summary>
+            Generates a documentation comment ID for a property given its container type and property name.
+            Example: P:Namespace.ContainingType.PropertyName
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.MethodInfo)">
+            <summary>
+            Generates a documentation comment ID for a method (or constructor).
+            For example:
+              M:Namespace.ContainingType.MethodName(ParamType1,ParamType2)~ReturnType
+              M:Namespace.ContainingType.#ctor(ParamType)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.GetTypeDocId(System.Type,System.Boolean,System.Boolean)">
+            <summary>
+            Generates a documentation ID string for a type.
+            This method handles nested types (replacing '+' with '.'),
+            generic types, arrays, pointers, by-ref types, and generic parameters.
+            The <paramref name="includeGenericArguments"/> flag controls whether
+            constructed generic type arguments are emitted, while <paramref name="omitGenericArity"/>
+            controls whether the generic arity marker (e.g. "`1") is appended.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.NormalizeDocId(System.String)">
+            <summary>
+            Normalizes a documentation comment ID to match the compiler-style format.
+            Strips the return type suffix for ordinary methods but retains it for conversion operators.
+            </summary>
+            <param name="docId">The documentation comment ID to normalize.</param>
+            <returns>The normalized documentation comment ID.</returns>
+        </member>
+    </members>
+</doc>

@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 using System.Threading.RateLimiting;
+using Asp.Versioning;
 using FluentValidation;
 using Funkos.Cache;
 using Funkos.DbContext;
@@ -28,10 +30,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using MongoDB.Driver;
 using StackExchange.Redis;
+using Swashbuckle.AspNetCore.Filters;
 using RateLimitPartition = System.Threading.RateLimiting.RateLimitPartition;
 using Role = Funkos.Models.Role;
+using IOPath = System.IO.Path;
+using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
+using Funkos.EjemplosSwagger.AuthSwagger;
+using Funkos.EjemplosSwagger.CategoriaSwagger;
+using Funkos.EjemplosSwagger.FunkosSwagger;
+using Funkos.EjemplosSwagger.ProveedorSwagger;
 
 namespace Funkos.Infrastructure;
 
@@ -177,9 +188,33 @@ public static class ApplicationInfraestructure
                     //Indicamos qué claim del JWT representa los roles
                     RoleClaimType = "role"
                 };
-
+                
                 #endregion
             });
+        
+        services.AddSwaggerGen(options =>
+        {
+            // Definir esquema de seguridad JWT
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "Ingrese 'Bearer' seguido de un espacio y el token JWT."
+            });
+            // Aplicar esquema de seguridad globalmente
+            options.AddSecurityRequirement(document => new Microsoft.OpenApi.OpenApiSecurityRequirement
+            {
+                {
+                            
+                    new Microsoft.OpenApi.OpenApiSecuritySchemeReference("Bearer", document),
+                    new List<string>() // Soluciona el error de asignación de tipo al requerir List<string>
+                }
+            });
+        });
+
         #endregion
 
         #region AUTORIZACIONES
@@ -252,7 +287,7 @@ public static class ApplicationInfraestructure
             
             // Política restrictiva para producción (Dominio real de la app)
             options.AddPolicy("ClientesProd", policy =>
-                policy.WithOrigins("https://miaplicacion.com")
+                policy.WithOrigins("https://funkosapi.com")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials());
@@ -349,6 +384,70 @@ public static class ApplicationInfraestructure
                 graphqlServer.DisableIntrospection();
             }
         
+
+        #endregion
+
+        #region SWAGGER
+        services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Version = "v1.0.0",
+                Title = "Funkos API",
+                Description = "API REST para gestion de Funkos",
+                Contact = new OpenApiContact
+                {
+                    Name = "Marcos Jodar Gómez",
+                    Email = "marcoselmejordelmundo@gmail.com"
+                }
+            });
+
+            // Incluir comentarios XML (solo si existe: si no, IncludeXmlComments lanza FileNotFoundException)
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = IOPath.Combine(AppContext.BaseDirectory, xmlFile);
+            if (File.Exists(xmlPath))
+            {
+                options.IncludeXmlComments(xmlPath);
+            }
+
+            options.EnableAnnotations();
+            options.ExampleFilters();
+            
+        });
+        services.AddSwaggerExamplesFromAssemblyOf<SignupRequestExample>();
+        services.AddSwaggerExamplesFromAssemblyOf<LoginRequestExample>();
+        services.AddSwaggerExamplesFromAssemblyOf<CreateCategoriaExample>();
+        services.AddSwaggerExamplesFromAssemblyOf<UpdateCategoriaExample>();
+        services.AddSwaggerExamplesFromAssemblyOf<CreateProveedorExample>();
+        services.AddSwaggerExamplesFromAssemblyOf<UpdateProveedorExample>();
+        services.AddSwaggerExamplesFromAssemblyOf<CreateFunkoExample>();
+        services.AddSwaggerExamplesFromAssemblyOf<UpdateFunkoExample>();
+        
+        #endregion
+
+        #region VERSIONADO
+        /*
+         * services.AddApiVersioning(options =>
+        {
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.ReportApiVersions = true;
+        })
+
+        .AddApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'VVV";
+            options.SubstituteApiVersionInUrl = true;
+        });
+
+        services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "Funkos API", Version = "v1" });
+            options.SwaggerDoc("v2", new OpenApiInfo { Title = "Funkos API", Version = "v2" });
+            
+        });
+         */
+       
 
         #endregion
         

@@ -11,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 // appsettings.json + appsettings.{Environment}.json + variables de entorno
 //var miConfig = builder.Configuration.GetSection("Application").Get<AppConfig>();
 
+builder.Services.AddSwaggerGen();
+//https://localhost:5175/swagger/index.html
 
 builder.Services.AddApplicationServices(builder.Configuration);
 
@@ -64,6 +66,8 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 #endregion
 
+
+
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .CreateLogger();
@@ -83,6 +87,13 @@ using (var scope = app.Services.CreateScope())
 app.UseCors("ClientesDev");
 
 app.UseExceptionHandler();
+
+// Habilitar Swagger solo en desarrollo
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseAuthentication();  // Primero: quien eres?
 app.UseAuthorization();   // Segundo: que puedes hacer?

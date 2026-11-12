@@ -1,12 +1,15 @@
 ﻿using System.Security.Claims;
 using System.Text;
 using Funkos.Dto.Auth;
+using Funkos.EjemplosSwagger.AuthSwagger;
 using Funkos.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 using LoginRequest = Funkos.Dto.Auth.LoginRequest;
 
 namespace Funkos.Controller;
@@ -17,6 +20,7 @@ namespace Funkos.Controller;
 /// </summary>
 [ApiController]
 [Route("api/auth")]
+[SwaggerTag("Gestion de usuarios y Tokens")]
 public class AuthIdentityController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration, ILogger<AuthIdentityController> logger) : ControllerBase
 {
     // UserManager<User> ==> gestiona CRUD de usuarios (crear, buscar, actualizar, eliminar, gestionar roles)
@@ -26,7 +30,16 @@ public class AuthIdentityController(UserManager<User> userManager, SignInManager
     /// Registra un usuario nuevo con Identity.
     /// </summary>
     [HttpPost("signup")]
-    public async Task<IActionResult> Signup([FromBody] AuthCreateDtoRequest request)
+    [SwaggerOperation(
+        Summary = "Registra un usuario nuevo",
+        Description = "Devuelve el ID, correo electronico y nombre de usuario del nuevo usuario",
+        OperationId = "Signup",
+        Tags = new[] { "Usuarios" }
+    )]
+    [SwaggerRequestExample(typeof(AuthCreateDtoRequest), typeof(SignupRequestExample))]
+    [SwaggerResponse(201, "Datos del usuario", typeof(IActionResult))]
+    [SwaggerResponse(400, "Parametros invalidos", typeof(ProblemDetails))]
+    public async Task<IActionResult> Signup([FromBody, SwaggerRequestBody("nombre de usuario, email y contrasena")] AuthCreateDtoRequest request)
     {
         var user = new User
         { //Datos por defecto de entity
@@ -65,7 +78,17 @@ public class AuthIdentityController(UserManager<User> userManager, SignInManager
     /// Inicia sesion verificando las credenciales y genera un Token JWT para autenticar futuras peticiones.
     /// </summary>
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    [SwaggerOperation(
+        Summary = "Inicia sesión de un usuario ya registrado",
+        Description = "Devuelve el Token con informacion del usuario y el ID del usuario",
+        OperationId = "Login",
+        Tags = new[] { "Usuarios" }
+    )]
+    [SwaggerRequestExample(typeof(LoginRequest), typeof(LoginRequestExample))]
+    [SwaggerResponse(200, "Datos del usuario", typeof(IActionResult))]
+    [SwaggerResponse(401, "Credenciales invalidas", typeof(ProblemDetails))]
+    public async Task<IActionResult> Login([FromBody, SwaggerRequestBody("usuario y contraseña", Required = true)] LoginRequest request)
+    
     {
         //Buscamos al usuario por su nombre de usuario
         var userName = await  userManager.FindByNameAsync(request.Username);
@@ -143,6 +166,14 @@ public class AuthIdentityController(UserManager<User> userManager, SignInManager
     /// </summary>
     [Authorize] // Exige que la petición incluya un token JWT válido en las cabeceras
     [HttpGet("me")]
+    [SwaggerOperation(
+        Summary = "Perfil de datos del usuario",
+        Description = "Devuelve el usuario autenticado actual",
+        OperationId = "GetCurrent",
+        Tags = new[] { "User" }
+    )]
+    [SwaggerResponse(200, "Datos del usuario y fecha de creación y de inicio de sesión", typeof(AuthDtoResponse))]
+    [SwaggerResponse(404, "Usuario no encontrado")]
     public async Task<ActionResult<AuthDtoResponse>> GetCurrentUser()
     {
         // Extraemos el usuario actual a partir del contexto de seguridad de la petición

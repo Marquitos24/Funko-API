@@ -71,12 +71,12 @@ public class CategoriaService(ICategoriaRepository repository, IValidator<Catego
         
         //Buscamos el Categoria por Id y comprobamos si existe, si no salta error
         var proveedorId = await repository.FindByIdAsync(id, cancellationToken);
-        if (string.IsNullOrWhiteSpace(id) || proveedorId is null) {logger.LogWarning("No se encontro el Proveedor {id}", id); return Result.Failure<CategoriaDtoResponse, DomainErrors>(CategoriaError.NotFound(id));} 
+        if (string.IsNullOrWhiteSpace(id) || proveedorId is null) {logger.LogWarning("No se encontro la categoria {id}", id); return Result.Failure<CategoriaDtoResponse, DomainErrors>(CategoriaError.NotFound(id));} 
 
         
         //Convertimos el RequestDTO al Modelo y validamos, si es null salta error
         var proveedorModel = CategoriaMapper.ToEntityUpdate(updatedCat);
-        if (proveedorModel is null) {logger.LogWarning("No guardo el Proveedor {id}", id);  return Result.Failure<CategoriaDtoResponse, DomainErrors>(CategoriaError.NotFound());} 
+        if (proveedorModel is null) {logger.LogWarning("No guardo la categoria {id}", id);  return Result.Failure<CategoriaDtoResponse, DomainErrors>(CategoriaError.NotFound());} 
 
         
         //Comprobamos que el Categoria actualizado NO tiene un nombre igual a otro Categoria

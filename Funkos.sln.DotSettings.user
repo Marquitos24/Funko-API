@@ -47,11 +47,18 @@
     &lt;TestId&gt;NUnit3x::3875B0F7-3003-055F-4A58-79DD5FE07B84::net10.0::Funkos.Test.Validations.CategoriaValidationTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::3875B0F7-3003-055F-4A58-79DD5FE07B84::net10.0::Funkos.Test.Validations.ProveedorValidationTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::3875B0F7-3003-055F-4A58-79DD5FE07B84::net10.0::Funkos.Test.Validations.FunkoValidationTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::3875B0F7-3003-055F-4A58-79DD5FE07B84::net10.0::Funkos.Test.GraphQL.Mutations.TiendaMutationTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::3875B0F7-3003-055F-4A58-79DD5FE07B84::net10.0::Funkos.Test.GraphQL.Queries.TiendaQueryTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8c0d8c42_002Ddeab_002D41c1_002D8e41_002Dd8e997f8d187/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="FunkoMapperTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::3875B0F7-3003-055F-4A58-79DD5FE07B84::net10.0::Funkos.Test.Mappers.FunkoMapperTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a74b5a3c_002Df3cc_002D46ba_002Db69e_002Ddaf5f413586a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CrearProducto_DeberiaRetornarDtoYNotificar_CuandoDatosSonValidos" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::3875B0F7-3003-055F-4A58-79DD5FE07B84::net10.0::Funkos.Test.GraphQL.Mutations.TiendaMutationTests.CrearProducto_DeberiaRetornarDtoYNotificar_CuandoDatosSonValidos&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c75c08e3_002D2396_002D4c44_002D9bde_002D77c23ef7fc6e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="FunkoMapperTest #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;

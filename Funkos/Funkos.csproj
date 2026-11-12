@@ -5,9 +5,13 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Asp.Versioning.Http" Version="10.2.3" />
+        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="10.2.1" />
         <PackageReference Include="CSharpFunctionalExtensions" Version="3.7.0" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
         <PackageReference Include="GreenDonut" Version="16.7.5" />
@@ -25,6 +29,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="10.0.14" />
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.23.0" />
+        <PackageReference Include="Microsoft.OpenApi" Version="2.12.2" />
         <PackageReference Include="MongoDB.Driver" Version="3.13.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
@@ -33,6 +38,9 @@
         <PackageReference Include="Serilog.AspNetCore" Version="10.0.1-dev-02312" />
         <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
         <PackageReference Include="Serilog.Sinks.File" Version="8.0.0-nblumhardt-02322" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="10.3.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="10.3.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="10.0.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -42,7 +50,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="GraphQL\DataLoaders\" />
       <Folder Include="Infrastructure\Data\" />
       <Folder Include="logs\" />
     </ItemGroup>

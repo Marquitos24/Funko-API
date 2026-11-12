@@ -1,5 +1,8 @@
-﻿namespace Funkos.Dto.Common;
+﻿using Swashbuckle.AspNetCore.Annotations;
 
+namespace Funkos.Dto.Common;
+
+[SwaggerSchema(Description = "Datos para crear una categoria")]
 public record PagedResult<T>
 {
     /// <summary>
