@@ -191,7 +191,9 @@ public static class ApplicationInfraestructure
                 
                 #endregion
             });
-        
+
+        #region Documentacion JWT
+
         services.AddSwaggerGen(options =>
         {
             // Definir esquema de seguridad JWT
@@ -205,15 +207,17 @@ public static class ApplicationInfraestructure
                 Description = "Ingrese 'Bearer' seguido de un espacio y el token JWT."
             });
             // Aplicar esquema de seguridad globalmente
-            options.AddSecurityRequirement(document => new Microsoft.OpenApi.OpenApiSecurityRequirement
+            options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
             {
                 {
                             
-                    new Microsoft.OpenApi.OpenApiSecuritySchemeReference("Bearer", document),
+                    new OpenApiSecuritySchemeReference("Bearer", document),
                     new List<string>() // Soluciona el error de asignación de tipo al requerir List<string>
                 }
             });
         });
+
+        #endregion
 
         #endregion
 
@@ -386,6 +390,12 @@ public static class ApplicationInfraestructure
         
 
         #endregion
+        
+        #region EMAIL
+        /*
+         *
+         */
+        #endregion
 
         #region SWAGGER
         services.AddSwaggerGen(options =>
@@ -450,6 +460,8 @@ public static class ApplicationInfraestructure
        
 
         #endregion
+
+        
         
         return services;
     }

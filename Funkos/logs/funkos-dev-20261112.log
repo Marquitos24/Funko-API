@@ -8605,3 +8605,31 @@ LIMIT @p
 2026-11-12 16:00:36.039 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5175/hubs/notificaciones?id=lU-CSlxXrSYfkTO6bf7Esg&access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJqdGkiOiIyMTdhNmFhOC0yNTc2LTQzNGUtOTc3Zi1kMGQ0NzljMWY4MmUiLCJpYXQiOjE3OTQ0OTU0NTUsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJkZXBhcnRtZW50IjoiSVQiLCJuYmYiOjE3OTQ0OTU0NTUsImV4cCI6MTc5NDQ5NjM1NSwiaXNzIjoiRnVua29zQXBpIiwiYXVkIjoiRnVua29zQ2xpZW50In0.03eCaBG3xwjtImxiO5OZ7yVyYE3YhAVueDqd9Qu3jaw - 101 null null 178042.3102ms
 2026-11-12 16:01:06.018 +01:00 [INF] Executed endpoint '/hubs/notificaciones'
 2026-11-12 16:01:06.019 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5175/hubs/notificaciones?id=nPzqdgzaEm73knSQaO5nTg&access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJqdGkiOiIyMTdhNmFhOC0yNTc2LTQzNGUtOTc3Zi1kMGQ0NzljMWY4MmUiLCJpYXQiOjE3OTQ0OTU0NTUsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJkZXBhcnRtZW50IjoiSVQiLCJuYmYiOjE3OTQ0OTU0NTUsImV4cCI6MTc5NDQ5NjM1NSwiaXNzIjoiRnVua29zQXBpIiwiYXVkIjoiRnVua29zQ2xpZW50In0.03eCaBG3xwjtImxiO5OZ7yVyYE3YhAVueDqd9Qu3jaw - 101 null null 29987.0484ms
+2026-11-12 16:22:15.813 +01:00 [INF] User profile is available. Using 'C:\Users\Marcos\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-11-12 16:22:16.996 +01:00 [INF] Executed DbCommand (43ms) [Parameters=[@normalizedName='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."ConcurrencyStamp", r."Description", r."Name", r."NormalizedName"
+FROM roles AS r
+WHERE r."NormalizedName" = @normalizedName
+LIMIT 1
+2026-11-12 16:22:17.067 +01:00 [INF] Executed DbCommand (2ms) [Parameters=[@normalizedName='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."ConcurrencyStamp", r."Description", r."Name", r."NormalizedName"
+FROM roles AS r
+WHERE r."NormalizedName" = @normalizedName
+LIMIT 1
+2026-11-12 16:22:17.089 +01:00 [INF] Executed DbCommand (8ms) [Parameters=[@normalizedEmail='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."AccessFailedCount", u."ConcurrencyStamp", u."CreatedAt", u."Email", u."EmailConfirmed", u."IsActive", u."LastLoginAt", u."LockoutEnabled", u."LockoutEnd", u."NormalizedEmail", u."NormalizedUserName", u."PasswordHash", u."PhoneNumber", u."PhoneNumberConfirmed", u."SecurityStamp", u."TwoFactorEnabled", u."UserName"
+FROM users AS u
+WHERE u."NormalizedEmail" = @normalizedEmail
+LIMIT 2
+2026-11-12 16:22:17.126 +01:00 [INF] Executed DbCommand (2ms) [Parameters=[@normalizedEmail='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."AccessFailedCount", u."ConcurrencyStamp", u."CreatedAt", u."Email", u."EmailConfirmed", u."IsActive", u."LastLoginAt", u."LockoutEnabled", u."LockoutEnd", u."NormalizedEmail", u."NormalizedUserName", u."PasswordHash", u."PhoneNumber", u."PhoneNumberConfirmed", u."SecurityStamp", u."TwoFactorEnabled", u."UserName"
+FROM users AS u
+WHERE u."NormalizedEmail" = @normalizedEmail
+LIMIT 2
+2026-11-12 16:22:17.192 +01:00 [INF] Connecting to Redis endpoints: localhost:6379. Using Server Name: PORTµTIL_MARCOS_f627c4d2425b43769a034644666a5bdf
+2026-11-12 16:22:18.138 +01:00 [INF] Now listening on: http://localhost:5175
+2026-11-12 16:22:18.140 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-12 16:22:18.141 +01:00 [INF] Hosting environment: Development
+2026-11-12 16:22:18.142 +01:00 [INF] Content root path: C:\Users\Marcos\Documents\Proyectos\Back-end\C#\Funkos\Funkos
+2026-11-12 16:22:19.352 +01:00 [INF] Connected to Redis.
+2026-11-12 16:22:24.514 +01:00 [INF] Application is shutting down...
